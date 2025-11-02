@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import perro from '../assets/images/perro.webp';
+---
+
+<section class="w-full h-dvh bg-rojo-oscuro border-25 border-verde-apagado flex items-center justify-evenly px-10">
+  <div class="w-1/2">
+    <Image src={perro} alt="Perro con luces navideñas" class="w-full max-w-[600px]" />
+  </div>
+  
+  <div class="w-1/2 text-naranja-claro">
+    <h2 class="mb-16">
+      <span class="font-youngest text-8xl uppercase">Somos pet</span>
+      <span class="font-vintage text-[10rem] block leading-20">friendly!</span>
+    </h2>
+    
+    <p class="font-youngest text-3xl mb-6 font-bold">
+      ¡Los peluditos son nuestros consentidos!
+    </p>
+    
+    <p class="font-youngest text-xl leading-relaxed">
+      Notificanos cuantos peludos hay en<br />
+      casa y les llevamos una sorpresa.
+    </p>
+  </div>
+</section>

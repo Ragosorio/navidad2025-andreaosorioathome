@@ -1,0 +1,31 @@
+---
+import Navbar from "./Navbar.astro";
+import { Image } from 'astro:assets';
+import fondoCircular from '../assets/images/fondo-circular.webp';
+import mona from '../assets/images/mona.webp';
+import masInfo from '../assets/images/info-down.webp';
+---
+
+<section
+  class="w-screen h-dvh bg-[url(../assets/images/fondo-rojo-desktop.png)] bg-cover bg-center overflow-x-hidden relative"
+>
+  <Navbar />
+  <div class="w-full h-[calc(100dvh-90px)] flex items-center justify-center">
+    <div class="relative">
+      <Image src={fondoCircular} alt="Imagen decorativa de fondo" class="w-[490px]" />
+      
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-10 pb-12">
+        <h1 class="font-vintage text-verde-oscuro text-9xl text-center leading-20 mb-4">
+          Lleva la navidad a tu casa
+        </h1>
+        
+        <button class="bg-verde-apagado text-white px-16 py-3 rounded-full text-xl font-youngest uppercase tracking-wider hover:opacity-90">
+          Reserva aquí
+        </button>
+      </div>
+      
+      <Image src={mona} alt="Imagen de moña decorativa" class="absolute bottom-3 left-1/2 -translate-x-2/5 w-56" />
+    </div>
+  </div>
+  <Image src={masInfo} alt="Para obtener más información scrollea" class="w-36 absolute bottom-2 left-6"/>
+</section>

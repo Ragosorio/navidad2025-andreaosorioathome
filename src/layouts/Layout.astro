@@ -1,22 +1,42 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Andrea Osorio at home</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
+<style is:global>
+  @import "tailwindcss";
+
+  @theme {
+	  --color-verde-oscuro: #0f3316;
+	  --color-verde-apagado: #455447;
+	  --color-rojo-oscuro: #641013;
+	  --color-rojo: #853835;
+	  --color-naranja-claro: #f2edeb;
+	  
+	  --font-youngest: "youngest", sans-serif; 
+	  --font-vintage: "vintage", sans-serif; 
+	}
+	
+	@font-face {
+	  font-family: "youngest";
+	  font-display: swap;
+	  font-style: normal;
+	  font-weight: normal;
+	  src: url("/fonts/youngest.woff2") format("woff2");
+	}
+  
+	@font-face {
+	  font-family: "vintage";
+	  font-display: swap;
+	  src: url("/fonts/vintage.woff2") format("woff2");
 	}
 </style>

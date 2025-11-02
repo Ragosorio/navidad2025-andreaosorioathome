@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import mona from '../assets/images/mona.webp';
+import logoRojo from '../assets/images/logo-rojo.png';
+import Estrella from './icons/Estrella.astro';
+
+const faqs = [
+  {
+    pregunta: "¿Cuándo y cómo recibo mis fotos?",
+    respuesta: "En un máximo de 2 días hábiles, vía galería digital privada."
+  },
+  {
+    pregunta: "¿Cómo elegimos nuestras fotos?",
+    respuesta: "Después de la sesión, recibirás acceso a una galería privada donde podrás seleccionar tus favoritas."
+  },
+  {
+    pregunta: "¿Cómo puedo agregar más fotos?",
+    respuesta: "Puedes agregar fotos adicionales contactándonos directamente con un costo extra por foto."
+  },
+  {
+    pregunta: "¿Y si?",
+    respuesta: "Respuesta a la pregunta Y si."
+  },
+  {
+    pregunta: "¿O no?",
+    respuesta: "Respuesta a la pregunta O no."
+  }
+];
+
+const leftColumn = faqs.slice(0, 3);
+const rightColumn = faqs.slice(3);
+---
+
+<section class="w-full min-h-dvh bg-[url(../assets/images/papel-fondo.webp)] bg-cover bg-center border-20 border-rojo-oscuro pt-16 pb-10 flex flex-col">
+  <!-- Header -->
+  <div class="relative text-center mb-20">
+    <h2 class="font-vintage text-rojo-oscuro text-9xl leading-16 mb-16">Preguntas frecuentes</h2>
+    <div class="w-full h-2 bg-verde-apagado relative z-10">
+      <Image src={mona} alt="" class="absolute top-2/6 left-1/2 -translate-x-1/2 -translate-y-2/6 w-64" />
+    </div>
+  </div>
+
+  <!-- Preguntas en 2 columnas -->
+  <div class="grid grid-cols-2 gap-x-32 gap-y-6 px-32 mb-auto">
+    <!-- Columna 1 -->
+    <div class="space-y-6">
+      {leftColumn.map((faq, index) => (
+        <div class="faq-item">
+          <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+            <Estrella class="w-6 h-6 shrink-0 mt-1" />
+            {faq.pregunta}
+          </button>
+          <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+            {faq.respuesta}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Columna 2 -->
+    <div class="space-y-6">
+      {rightColumn.map((faq, index) => (
+        <div class="faq-item">
+          <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+            <Estrella class="w-6 h-6 shrink-0 mt-1" />
+            {faq.pregunta}
+          </button>
+          <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+            {faq.respuesta}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Logo footer -->
+  <div class="flex justify-center mt-50">
+    <Image src={logoRojo} alt="Andrea Osorio at home" class="w-96" />
+  </div>
+</section>
+
+<script>
+  // Activar la primera pregunta por defecto
+  const firstAnswer = document.querySelector('.faq-answer') as HTMLElement;
+  if (firstAnswer) {
+    firstAnswer.style.maxHeight = `${firstAnswer.scrollHeight}px`;
+    firstAnswer.style.opacity = '1';
+  }
+
+  // Manejar clicks en preguntas
+  const faqButtons = document.querySelectorAll('.faq-item button') as NodeListOf<HTMLButtonElement>;
+  
+  faqButtons.forEach((button: HTMLButtonElement) => {
+    button.addEventListener('click', () => {
+      const answer = button.nextElementSibling as HTMLElement;
+      const isOpen = answer.style.maxHeight !== '0px' && answer.style.maxHeight !== '';
+      
+      // Cerrar todas las respuestas
+      document.querySelectorAll('.faq-answer').forEach((ans: Element) => {
+        const element = ans as HTMLElement;
+        element.style.maxHeight = '0';
+        element.style.opacity = '0';
+      });
+      
+      // Si estaba cerrada, abrirla
+      if (!isOpen) {
+        answer.style.maxHeight = `${answer.scrollHeight}px`;
+        answer.style.opacity = '1';
+      }
+    });
+  });
+</script>
