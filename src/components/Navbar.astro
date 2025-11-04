@@ -3,10 +3,10 @@ import { Image } from 'astro:assets';
 import logoVerde from '../assets/images/logov.webp';
 ---
 
-<nav class="w-full flex items-center justify-between px-40 ml-8 py-4 text-naranja-claro overflow-hidden">
-  <a href="#" class="font-youngest text-2xl hover:opacity-90 hover:cursor-pointer">Inicio</a>
-  <a href="#" class="font-youngest text-2xl hover:opacity-90 hover:cursor-pointer">Información</a>
-  <Image src={logoVerde} alt="Andrea Osorio at home logo" class="w-80" />
-  <a href="#" class="font-youngest text-2xl hover:opacity-90 hover:cursor-pointer">Reagendar</a>
-  <a href="#" class="font-youngest text-2xl hover:opacity-90 hover:cursor-pointer">Cancelar cita</a>
+<nav class="w-full flex items-center justify-between px-40 ml-8 pt-10 pb-4 text-naranja-claro">
+  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Inicio</a>
+  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Información</a>
+  <Image src={logoVerde} alt="Andrea Osorio at home logo" class="w-72" />
+  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Reagendar</a>
+  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Cancelar cita</a>
 </nav>

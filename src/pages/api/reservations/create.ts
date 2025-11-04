@@ -1,4 +1,4 @@
-export const prerender = false
+export const prerender = false;
 import { supabase } from "../../../lib/supabaseServer";
 
 export async function POST({ request }: { request: Request }) {
@@ -16,6 +16,7 @@ export async function POST({ request }: { request: Request }) {
   });
 
   if (error) return new Response(error.message, { status: 400 });
-  return Response.json({ success: true, reservation_id: data.id });
-}
 
+  // data YA es el reservation_id
+  return Response.json({ success: true, reservation_id: data });
+}
