@@ -1,74 +1,100 @@
 ---
-import { Image } from 'astro:assets';
-import mona from '../assets/images/mona.webp';
-import monaClara from '../assets/images/mona-rojo-claro.webp';
-import fondoCircular from '../assets/images/fondo-circular.webp';
+import { Image } from "astro:assets";
+import fondoRojo from "../assets/images/pack-fondo-rojo.webp";
+import fondoVerde from "../assets/images/pack-fondo-verde.webp";
+import masPopular from "../assets/images/pack-popular.webp";
+import bolaNieve from "../assets/images/pack-bola.webp";
+import regalo from "../assets/images/pack-regalo.webp";
 ---
-
-<section
-  class="w-screen h-dvh pb-10"
->
-  <h2 class="text-naranja-claro font-vintage pt-14 text-7xl text-center bg-[url(../assets/images/fondo-verde-desktop.png)] bg-cover bg-center p-4">Elige tu paquete</h2>
+<section class="w-screen flex flex-col">
+  <div
+    class="w-full bg-[url(../assets/images/fondo-verde-mobile.webp)] md:bg-[url(../assets/images/fondo-verde-desktop.png)] bg-cover bg-center shrink-0"
+  >
+    <h2 class="text-naranja-claro font-vintage pt-10 pb-8 text-5xl md:text-8xl text-center">
+      Elige tu paquete:
+    </h2>
+  </div>
   
-  <div class="flex justify-center items-start gap-40 px-20 border-l-18 border-r-18  border-b-18 border-verde-oscuro h-[87%]">
+  <div class="flex-1 border-r-8 md:border-r-15 border-l-8 md:border-l-15 border-t-12 md:border-t-24 border-verde-apagado w-full flex flex-col md:flex-row">
     <!-- Paquete 1 -->
-    <div class="relative">
-      <Image src={fondoCircular} alt="" class="w-[400px]" />
+    <div class="w-full md:w-1/2 bg-[#ab221c] relative flex flex-col items-center justify-center p-8 md:p-16 md:min-h-0">
+      <h3 class="text-naranja-claro font-vintage text-5xl md:text-7xl absolute top-8 md:top-12 left-6 md:left-8">
+        Paquete 1
+      </h3>
       
-      <div class="absolute inset-0 flex flex-col items-center justify-center px-12 pt-16 pb-20">
-        <h3 class="font-vintage text-rojo-oscuro text-8xl leading-20">Paquete 1</h3>
+      <div class="relative">
+        <Image 
+          src={fondoVerde} 
+          alt="Fondo paquete 1" 
+          class="w-[280px] md:w-[400px] pt-14 h-auto"
+        />
         
-        <ul class="text-rojo font-youngest text-xl space-y-0.5 text-center mb-8">
-          <li>- 1 a 3 personas</li>
-          <li>- 20 minutos de sesión</li>
-          <li>- Traslado de 2 sets a tu casa.</li>
-          <li>- Props navideños</li>
-          <li>- 15 fotos digitales</li>
-        </ul>
-        
-        <div class="text-center mb-6 mt-4">
-          <p class="font-vintage text-rojo-oscuro text-7xl leading-8">Q1,600</p>
-          <p class="font-youngest text-rojo text-sm uppercase">Reserva por Q500</p>
+        <div class="absolute inset-0 pt-20 flex flex-col items-center justify-center text-naranja-claro px-8 md:px-12 font-youngest">
+          <p class="text-base md:text-xl mb-2">- 1 a 3 personas</p>
+          <p class="text-base md:text-xl mb-2">- 20 minutos de sesión</p>
+          <p class="text-base md:text-xl mb-2">- Traslado de 2 sets a tu casa.</p>
+          <p class="text-base md:text-xl mb-2">- Props navideños</p>
+          <p class="text-base md:text-xl mb-6 md:mb-8">- 15 fotos digitales</p>
+          
+          <p class="font-vintage text-4xl md:text-6xl mb-2 text-[#d3baa1]">Q1,600</p>
+          <p class="text-xs md:text-sm mb-4 md:mb-6 uppercase tracking-wide text-[#d3baa1] font-youngest">Reserva con Q500</p>
+          
+          <button class="bg-[#d3baa1] text-verde-oscuro px-6 md:px-8 py-2 md:py-3 rounded-full uppercase font-youngest text-sm md:text-lg hover:opacity-90 transition-opacity">
+            Elegir paquete
+          </button>
         </div>
-        
-        <button class="bg-rojo-oscuro text-naranja-claro px-10 py-3 rounded-full font-youngest text-lg uppercase tracking-wider hover:opacity-90">
-          Elegir paquete
-        </button>
       </div>
       
-      <Image src={mona} alt="" class="absolute -bottom-2 left-1/2 -translate-x-4/9 w-48" />
+      <Image 
+        src={bolaNieve} 
+        alt="Bola de nieve decorativa" 
+        class="absolute bottom-2 left-2 w-28 md:w-40"
+      />
     </div>
 
+    <!-- Línea divisoria -->
+    <div class="h-2 md:h-auto md:w-5 bg-verde-apagado shrink-0"></div>
+
     <!-- Paquete 2 -->
-    <div class="relative">
-      <span class="absolute top-14 -right-2 bg-rojo-oscuro text-naranja-claro px-6 py-2 rounded-2xl font-youngest text-xl z-10">
-        Más popular
-      </span>
+    <div class="w-full md:w-1/2 bg-[#6c806f] relative flex flex-col items-center justify-center p-8 md:p-16 md:min-h-0">
+      <h3 class="text-naranja-claro font-vintage text-5xl md:text-7xl absolute top-8 md:top-12 left-6 md:left-8">
+        Paquete 2
+      </h3>
       
-      <Image src={fondoCircular} alt="" class="w-[400px]" />
+      <Image 
+        src={masPopular} 
+        alt="Más popular" 
+        class="absolute top-24 md:top-40 right-8 md:right-12 w-32 md:w-48 z-10"
+      />
       
-      <div class="absolute inset-0 flex flex-col items-center justify-center px-12 pt-16 pb-20">
-        <h3 class="font-vintage text-rojo text-8xl leading-20">Paquete 2</h3>
+      <div class="relative">
+        <Image 
+          src={fondoRojo} 
+          alt="Fondo paquete 2" 
+          class="w-[280px] md:w-[400px] pt-14 h-auto"
+        />
         
-        <ul class="text-rojo-oscuro font-youngest text-xl space-y-0.5 text-center mb-8">
-          <li>- 4 a 6 personas</li>
-          <li>- 40 minutos de sesión</li>
-          <li>- Traslado de 2 sets a tu casa.</li>
-          <li>- Props navideños</li>
-          <li>- 25 fotos digitales</li>
-        </ul>
-        
-        <div class="text-center mb-6 mt-4">
-          <p class="font-vintage text-rojo text-7xl leading-8">Q2,000</p>
-          <p class="font-youngest text-rojo-oscuro text-sm uppercase">Reserva por Q500</p>
+        <div class="absolute inset-0 pt-20 flex flex-col items-center justify-center text-naranja-claro px-8 md:px-12 font-youngest">
+          <p class="text-base md:text-xl mb-2">- 4 a 6 personas</p>
+          <p class="text-base md:text-xl mb-2">- 40 minutos de sesión</p>
+          <p class="text-base md:text-xl mb-2">- Traslado de 2 sets a tu casa.</p>
+          <p class="text-base md:text-xl mb-2">- Props navideños</p>
+          <p class="text-base md:text-xl mb-6 md:mb-8">- 25 fotos digitales</p>
+          
+          <p class="font-vintage text-4xl md:text-6xl mb-2 text-[#d3baa1]">Q2,000</p>
+          <p class="text-xs md:text-sm mb-4 md:mb-6 uppercase tracking-wide text-[#d3baa1] font-youngest">Reserva con Q500</p>
+          
+          <button class="bg-[#d3baa1] text-rojo-oscuro px-6 md:px-8 py-2 md:py-3 rounded-full uppercase font-youngest text-sm md:text-lg hover:opacity-90 transition-opacity">
+            Elegir paquete
+          </button>
         </div>
-        
-        <button class="bg-rojo text-naranja-claro px-10 py-3 rounded-full font-youngest text-lg uppercase tracking-wider hover:opacity-90">
-          Elegir paquete
-        </button>
       </div>
       
-      <Image src={monaClara} alt="" class="absolute -bottom-2 left-1/2 -translate-x-4/9 w-48" />
+      <Image 
+        src={regalo} 
+        alt="Regalo decorativo" 
+        class="absolute bottom-2 right-2 w-24 md:w-36"
+      />
     </div>
   </div>
 </section>

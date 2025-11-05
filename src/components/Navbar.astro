@@ -3,10 +3,76 @@ import { Image } from 'astro:assets';
 import logoVerde from '../assets/images/logov.webp';
 ---
 
-<nav class="w-full flex items-center justify-between px-40 ml-8 pt-10 pb-4 text-naranja-claro">
-  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Inicio</a>
-  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Información</a>
-  <Image src={logoVerde} alt="Andrea Osorio at home logo" class="w-72" />
-  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Reagendar</a>
-  <a href="#" class="uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Cancelar cita</a>
+<nav class="w-full flex items-center justify-between px-4 sm:px-8 lg:px-40 lg:ml-8 pt-5 md:pt-8 pb-4 text-naranja-claro relative">
+  <div class="lg:contents flex items-center justify-between w-full">
+    <a href="#" class="hidden lg:block uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Inicio</a>
+    <a href="#" class="hidden lg:block uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Información</a>
+    
+    <Image src={logoVerde} alt="Andrea Osorio at home logo" class="w-56 lg:w-72 ml-5 md:mx-auto lg:mx-0 pt-5" />
+    
+    <a href="#" class="hidden lg:block uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Reagendar</a>
+    <a href="#" class="hidden lg:block uppercase font-youngest text-xl hover:opacity-90 hover:cursor-pointer">Cancelar cita</a>
+
+    <button id="burger" class="lg:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5 z-50 relative" aria-label="Toggle menu">
+      <span class="burger-line w-6 h-0.5 bg-naranja-claro transition-all duration-300"></span>
+      <span class="burger-line w-6 h-0.5 bg-naranja-claro transition-all duration-300"></span>
+      <span class="burger-line w-6 h-0.5 bg-naranja-claro transition-all duration-300"></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="lg:hidden fixed inset-0 bg-verde-oscuro/95 backdrop-blur-sm translate-x-full transition-transform duration-300 z-40 flex flex-col items-center justify-center gap-8">
+    <a href="#" class="uppercase font-youngest text-3xl text-naranja-claro hover:opacity-90 menu-item opacity-0 transition-opacity duration-300">Inicio</a>
+    <a href="#" class="uppercase font-youngest text-3xl text-naranja-claro hover:opacity-90 menu-item opacity-0 transition-opacity duration-300">Información</a>
+    <a href="#" class="uppercase font-youngest text-3xl text-naranja-claro hover:opacity-90 menu-item opacity-0 transition-opacity duration-300">Reagendar</a>
+    <a href="#" class="uppercase font-youngest text-3xl text-naranja-claro hover:opacity-90 menu-item opacity-0 transition-opacity duration-300">Cancelar cita</a>
+  </div>
 </nav>
+
+<script>
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const burgerLines = burger?.querySelectorAll('.burger-line');
+  const menuItems = mobileMenu?.querySelectorAll('.menu-item');
+
+  burger?.addEventListener('click', () => {
+    const isOpen = burger.classList.contains('open');
+    
+    if (isOpen) {
+      burger.classList.remove('open');
+      mobileMenu?.classList.add('translate-x-full');
+      menuItems?.forEach(item => item.classList.remove('opacity-100'));
+    } else {
+      burger.classList.add('open');
+      mobileMenu?.classList.remove('translate-x-full');
+      menuItems?.forEach((item, i) => {
+        setTimeout(() => item.classList.add('opacity-100'), i * 100);
+      });
+    }
+  });
+
+  menuItems?.forEach(item => {
+    item.addEventListener('click', () => {
+      burger?.classList.remove('open');
+      mobileMenu?.classList.add('translate-x-full');
+      menuItems.forEach(mi => mi.classList.remove('opacity-100'));
+    });
+  });
+</script>
+
+<style>
+  .burger-line {
+    transform-origin: center;
+  }
+
+  #burger.open .burger-line:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  #burger.open .burger-line:nth-child(3) {
+    opacity: 0;
+  }
+
+  #burger.open .burger-line:nth-child(2) {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+</style>

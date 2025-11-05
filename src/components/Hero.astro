@@ -7,28 +7,28 @@ import masInfo from "../assets/images/info-down.webp";
 ---
 
 <section
-  class="w-screen h-dvh bg-[url(../assets/images/fondo-rojo-desktop.png)] bg-cover bg-center overflow-x-hidden relative"
+  class="w-screen h-dvh bg-[url(../assets/images/fondo-rojo-mobile.webp)] md:bg-[url(../assets/images/fondo-rojo-desktop.png)] bg-cover bg-center overflow-x-hidden relative"
 >
   <Navbar />
-  <div class="w-full h-[calc(100dvh-120px)] flex items-center justify-center">
-    <div class="relative">
+  <div class="w-full h-[calc(100dvh-120px)] flex items-center justify-center px-4">
+    <div class="relative max-w-[90vw] sm:max-w-none -mt-10 md:mt-0">
       <Image
         src={fondoCircular}
         alt="Imagen decorativa de fondo"
-        class="w-[470px]"
+        class="w-[400px] md:w-[420px] lg:w-[470px]"
       />
 
       <div
-        class="absolute inset-0 flex flex-col items-center justify-center px-8 pt-12 pb-12"
+        class="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 pt-8 sm:pt-10 md:pt-12 pb-8 sm:pb-10 md:pb-12"
       >
         <h1
-          class="font-vintage text-verde-oscuro text-7xl text-center leading-10 mb-8"
+          class="font-vintage text-verde-oscuro text-5xl lg:text-7xl text-center leading-10 mb-4 sm:mb-6 md:mb-8 text-pretty"
         >
           ¡Este 2025 los sets navideños llegan a tu casa!
         </h1>
 
         <a
-          class="bg-verde-apagado text-white px-16 py-3 rounded-full text-xl font-montserrat uppercase tracking-wider shadow-lg shadow-verde-apagado/60 hover:opacity-90 transition-all"
+          class="bg-verde-apagado text-white px-8 sm:px-12 md:px-16 py-2 sm:py-2.5 md:py-3 rounded-full text-md lg:text-xl font-montserrat uppercase tracking-wider shadow-lg shadow-verde-apagado/60 hover:opacity-90 transition-all"
         >
           Reserva aquí ✨
         </a>
@@ -37,7 +37,7 @@ import masInfo from "../assets/images/info-down.webp";
       <Image
         src={mona}
         alt="Imagen de moña decorativa"
-        class="absolute -bottom-4 left-1/2 -translate-x-2/5 w-56"
+        class="absolute -bottom-4 left-1/2 -translate-x-2/5 w-44 lg:w-56"
       />
     </div>
   </div>
@@ -45,7 +45,7 @@ import masInfo from "../assets/images/info-down.webp";
     <Image
       src={masInfo}
       alt="Para obtener más información scrollea"
-      class="w-56 absolute bottom-5 right-5 shadow-lg shadow- shadow-white/20"
+      class="w-36 md:w-56 absolute bottom-3 md:bottom-5 right-4 md:right-5 shadow-lg shadow-white/20"
     />
   </a>
 </section>

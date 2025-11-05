@@ -3,24 +3,33 @@ import { Image } from 'astro:assets';
 import perro from '../assets/images/perro.webp';
 ---
 
-<section class="w-full h-dvh bg-rojo-oscuro border-25 border-verde-apagado flex items-center justify-evenly px-10">
-  <div class="w-1/2">
-    <Image src={perro} alt="Perro con luces navideñas" class="w-full max-w-[600px]" />
+<section class="w-full min-h-dvh bg-rojo-oscuro border-8 md:border-16 lg:border-20 xl:border-25 border-verde-apagado flex flex-col items-center justify-center px-4 py-12 md:py-0 md:flex-row md:justify-evenly md:px-0 gap-0 md:gap-8 lg:gap-0">
+  <!-- Títulos arriba en mobile, izquierda en desktop -->
+  <div class="w-full md:hidden text-naranja-claro text-center mb-8">
+    <h2 class="">
+      <span class="font-youngest text-5xl uppercase block">Somos pet</span>
+      <span class="font-vintage text-7xl block leading-10">friendly!</span>
+    </h2>
+  </div>
+
+  <!-- Imagen centrada -->
+  <div class="w-full md:w-1/2 flex items-center justify-center">
+    <Image src={perro} alt="Perro con luces navideñas" class="w-full md:max-w-[450px] lg:max-w-[600px] -mt-16 md:mt-0" />
   </div>
   
-  <div class="w-1/2 text-naranja-claro">
-    <h2 class="mb-16">
-      <span class="font-youngest text-8xl uppercase">Somos pet</span>
-      <span class="font-vintage text-[10rem] block leading-20">friendly!</span>
+  <!-- Contenido para desktop -->
+  <div class="w-full md:w-1/2 text-naranja-claro text-center md:text-left px-4 md:px-0">
+    <h2 class="hidden md:block mb-8 md:mb-12 lg:mb-16">
+      <span class="font-youngest text-6xl lg:text-7xl xl:text-8xl uppercase block">Somos pet</span>
+      <span class="font-vintage text-8xl lg:text-9xl xl:text-[10rem] block leading-tight lg:leading-20">friendly!</span>
     </h2>
     
-    <p class="font-youngest text-3xl mb-6 font-bold">
+    <p class="font-youngest text-xl md:text-2xl lg:text-3xl mb-4 md:mb-6 font-bold">
       ¡Los peluditos son nuestros consentidos!
     </p>
     
-    <p class="font-youngest text-xl leading-relaxed">
-      Notifícanos cuántos peludos hay en<br />
-      casa y les llevamos una sorpresa.
+    <p class="font-youngest text-base md:text-lg lg:text-xl leading-relaxed">
+      Notifícanos cuántos peludos hay en casa y les llevamos una sorpresa.
     </p>
   </div>
 </section>

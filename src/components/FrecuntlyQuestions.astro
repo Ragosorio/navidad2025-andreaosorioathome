@@ -6,76 +6,102 @@ import Estrella from './icons/Estrella.astro';
 
 const faqs = [
   {
-    pregunta: "¿Cuándo y cómo recibo mis fotos?",
-    respuesta: "En un máximo de 2 días hábiles, vía galería digital privada."
+    "pregunta": "¿En qué consiste la sesión a domicilio?",
+    "respuesta": "Llevamos dos sets a tu casa con fondo, luces y props para que tengas fotos profesionales sin salir de casa."
   },
   {
-    pregunta: "¿Cómo elegimos nuestras fotos?",
-    respuesta: "Después de la sesión, recibirás acceso a una galería privada donde podrás seleccionar tus favoritas."
+    "pregunta": "¿Hasta que zona de Guatemala llegan?",
+    "respuesta": "Llegamos en un perímetro de 25 km de la Ciudad de Guatemala, no llegamos a zonas rojas."
   },
   {
-    pregunta: "¿Cómo puedo agregar más fotos?",
-    respuesta: "Puedes agregar fotos adicionales contactándonos directamente con un costo extra por foto."
+    "pregunta": "¿Cuánto espacio necesito?",
+    "respuesta": "Aproximadamente 3.5 x 2.5 metros (el tamaño de una sala o habitación amplia)."
   },
   {
-    pregunta: "¿Y si?",
-    respuesta: "Respuesta a la pregunta Y si."
+    "pregunta": "¿Qué debo preparar antes de la sesión?",
+    "respuesta": "Tu mejor outfit y el espacio de su sesión despejado, nosotros nos encargamos del resto."
   },
   {
-    pregunta: "¿O no?",
-    respuesta: "Respuesta a la pregunta O no."
+    "pregunta": "¿Cuándo y cómo recibo mis fotos?",
+    "respuesta": "En un máximo de 2 días hábiles, vía galería digital privada."
+  },
+  {
+    "pregunta": "¿Cómo elegimos nuestras fotos?",
+    "respuesta": "Al finalizar tu sesión eliges junto al equipo tus fotos favoritas."
+  },
+  {
+    "pregunta": "¿Cómo puedo agregar más fotos?",
+    "respuesta": "Las fotos extras tienen un costo de Q25 c/u, puedes elegir cuantas desees."
   }
 ];
 
-const leftColumn = faqs.slice(0, 3);
-const rightColumn = faqs.slice(3);
+const leftColumn = faqs.slice(0, 4);
+const rightColumn = faqs.slice(4);
 ---
 
-<section class="w-full min-h-dvh bg-[url(../assets/images/papel-fondo.webp)] bg-cover bg-center border-20 border-rojo-oscuro pt-16 pb-10 flex flex-col">
+<section class="w-full min-h-dvh bg-[url(../assets/images/papel-fondo.webp)] bg-cover bg-center border-8 md:border-20 border-rojo-oscuro pt-16 pb-10 flex flex-col">
   <!-- Header -->
-  <div class="relative text-center mb-20">
-    <h2 class="font-vintage text-rojo-oscuro text-9xl leading-16 mb-16">Preguntas frecuentes</h2>
-    <div class="w-full h-2 bg-verde-apagado relative z-10">
-      <Image src={mona} alt="" class="absolute top-2/6 left-1/2 -translate-x-1/2 -translate-y-2/6 w-64" />
+  <div class="relative text-center md:text-start mb-12 md:mb-20">
+    <h2 class="font-vintage text-rojo-oscuro text-7xl md:text-9xl leading-10 md:leading-16 mb-8 md:mb-10 px-2 md:pl-10">Preguntas frecuentes</h2>
+    <div class="w-screen h-2 bg-verde-apagado -left-5 absolute z-10">
+      <Image src={mona} alt="" class="absolute top-2 left-7/12 -translate-x-7/12 -translate-y-2/6 w-40 md:w-60 md:-top-40 md:right-10 md:translate-none md:left-auto" />
     </div>
   </div>
 
-  <!-- Preguntas en 2 columnas -->
-  <div class="grid grid-cols-2 gap-x-32 gap-y-6 px-32 mb-auto">
-    <!-- Columna 1 -->
-    <div class="space-y-6">
-      {leftColumn.map((faq, index) => (
+  <!-- Preguntas en 1 columna mobile, 2 en desktop -->
+  <div class="pt-10 px-6 md:px-10 mb-auto">
+    <!-- Mobile: Una sola columna -->
+    <div class="md:hidden space-y-6">
+      {faqs.map((faq) => (
         <div class="faq-item">
-          <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
-            <Estrella class="w-6 h-6 shrink-0 mt-1" />
+          <button class="flex items-start gap-3 font-youngest text-verde-apagado text-xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+            <Estrella class="w-5 h-5 shrink-0 mt-1" />
             {faq.pregunta}
           </button>
-          <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+          <p class="faq-answer font-youngest text-verde-apagado text-base ml-8 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
             {faq.respuesta}
           </p>
         </div>
       ))}
     </div>
 
-    <!-- Columna 2 -->
-    <div class="space-y-6">
-      {rightColumn.map((faq, index) => (
-        <div class="faq-item">
-          <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
-            <Estrella class="w-6 h-6 shrink-0 mt-1" />
-            {faq.pregunta}
-          </button>
-          <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
-            {faq.respuesta}
-          </p>
-        </div>
-      ))}
+    <!-- Desktop: Dos columnas -->
+    <div class="hidden md:grid grid-cols-2 gap-x-0.5 gap-y-6">
+      <!-- Columna 1 -->
+      <div class="space-y-6">
+        {leftColumn.map((faq) => (
+          <div class="faq-item">
+            <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+              <Estrella class="w-6 h-6 shrink-0 mt-1" />
+              {faq.pregunta}
+            </button>
+            <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+              {faq.respuesta}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Columna 2 -->
+      <div class="space-y-6">
+        {rightColumn.map((faq) => (
+          <div class="faq-item">
+            <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+              <Estrella class="w-6 h-6 shrink-0 mt-1" />
+              {faq.pregunta}
+            </button>
+            <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+              {faq.respuesta}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 
   <!-- Logo footer -->
-  <div class="flex justify-center mt-50">
-    <Image src={logoRojo} alt="Andrea Osorio at home" class="w-96" />
+  <div class="flex justify-center mt-12 md:mt-0 relative">
+    <Image src={logoRojo} alt="Andrea Osorio at home" class="w-48 md:w-64 md:absolute md:right-10 md:bottom-5" />
   </div>
 </section>
 
