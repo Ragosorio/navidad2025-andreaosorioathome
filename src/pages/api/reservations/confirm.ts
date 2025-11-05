@@ -1,6 +1,8 @@
 export const prerender = false;
 import { supabase } from "../../../lib/supabaseServer";
 import { resend } from "../../../lib/resend";
+import { clientEmailTemplate } from "../../../utils/templates/clientEmail";
+import { adminEmailTemplate } from "../../../utils/templates/adminEmail";
 
 export async function POST({ request }: { request: Request }) {
   try {
@@ -15,7 +17,8 @@ export async function POST({ request }: { request: Request }) {
       .from("transfers")
       .upload(filename, file, { upsert: true });
 
-    const url = supabase.storage.from("transfers").getPublicUrl(filename).data.publicUrl;
+    const url = supabase.storage.from("transfers").getPublicUrl(filename)
+      .data.publicUrl;
 
     // 2) CONFIRMAR LA RESERVA
     const { error: confirmError } = await supabase.rpc("confirm_reservation", {
@@ -30,13 +33,15 @@ export async function POST({ request }: { request: Request }) {
     // 3) OBTENER DETALLES COMPLETOS (JOIN CON SLOTS)
     const { data: reservation, error: fetchError } = await supabase
       .from("reservations")
-      .select(`
+      .select(
+        `
         *,
         slot:slots(
           slot_date,
           slot_time
         )
-      `)
+      `
+      )
       .eq("id", reservation_id)
       .single();
 
@@ -53,10 +58,10 @@ export async function POST({ request }: { request: Request }) {
       personas_extra,
       paquete,
       phone,
-      slot
+      slot,
     } = reservation;
 
-    // FORMATO FECHA Y HORA DESDE slot
+    // FORMATO FECHA
     const formattedDate = new Date(slot.slot_date).toLocaleDateString("es-GT", {
       weekday: "long",
       year: "numeric",
@@ -64,47 +69,53 @@ export async function POST({ request }: { request: Request }) {
       day: "numeric",
     });
 
-    const formattedTime = slot.slot_time.slice(0, 5); // "14:30:00" → "14:30"
+    // FORMATO HORA 24h → 12h AM/PM
+    function formatTimeToAmPm(time24: string) {
+      const [hour, minute] = time24.split(":").map(Number);
+      const suffix = hour >= 12 ? "PM" : "AM";
+      const hour12 = hour % 12 || 12;
+      return `${hour12}:${minute.toString().padStart(2, "0")} ${suffix}`;
+    }
+
+    const formattedTime = formatTimeToAmPm(slot.slot_time.slice(0, 5));
 
     const precio = paquete === 1 ? "Q1600" : "Q2000";
 
     // 4) CORREO CLIENTE
     await resend.emails.send({
-      from: "Navidad <noreply@andreaosoriophotography.com>",
+      from: "Christmas at home <noreply@andreaosoriophotography.com>",
       to: email,
-      subject: "🎄 Tu sesión navideña ha sido confirmada",
-      html: `
-        <p>Hola ${first_name} ${last_name},</p>
-        <p>Tu cita ha sido <strong>confirmada</strong>.</p>
-        <p><strong>Fecha:</strong> ${formattedDate}<br>
-        <strong>Hora:</strong> ${formattedTime}</p>
-        <p>Gracias por confiar en nosotros 💜</p>
-      `,
+      subject: "Tu sesión navideña ha sido confirmada 🎄",
+      html: clientEmailTemplate({
+        first_name,
+        last_name,
+        formattedDate,
+        formattedTime,
+      }),
     });
 
     // 5) CORREO ADMIN
     await resend.emails.send({
-      from: "Navidad <noreply@andreaosoriophotography.com>",
+      from: "Christmas at home <noreply@andreaosoriophotography.com>",
       to: "Andreaosoriophotography@gmail.com",
       subject: `📌 Nueva cita confirmada - ${first_name} ${last_name}`,
-      html: `
-        <h2>Nueva reserva confirmada</h2>
-        <p><strong>Nombre:</strong> ${first_name} ${last_name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Tel:</strong> ${phone}</p>
-        <p><strong>Dirección:</strong> ${direccion}</p>
-        <p><strong>Mascotas:</strong> ${mascotas}</p>
-        <p><strong>Personas extra:</strong> ${personas_extra}</p>
-        <p><strong>Paquete:</strong> ${paquete} (${precio})</p>
-        <p><strong>Fecha:</strong> ${formattedDate}</p>
-        <p><strong>Hora:</strong> ${formattedTime}</p>
-        <p><strong>Imagen de comprobante:</strong></p>
-        <img src="${url}" style="max-width:350px;border-radius:8px;" />
-      `,
+      html: adminEmailTemplate({
+        first_name,
+        last_name,
+        email,
+        phone,
+        direccion,
+        mascotas,
+        personas_extra,
+        paquete,
+        precio,
+        formattedDate,
+        formattedTime,
+        imageUrl: url,
+      }),
     });
 
     return Response.json({ success: true });
-
   } catch {
     return new Response("Server error", { status: 500 });
   }
