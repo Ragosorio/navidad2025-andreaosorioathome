@@ -9,7 +9,10 @@ export default function CalendarioEligeDia() {
   const [slotsData, setSlotsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(600); // 10 min = 600 segundos
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [fileError, setFileError] = useState(null);
   const [error, setError] = useState(null);
   const [showTimeSelector, setShowTimeSelector] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -484,7 +487,7 @@ export default function CalendarioEligeDia() {
         {currentStep === "package" && (
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
             <h1 className="text-3xl md:text-4xl text-center mb-6 text-verde-oscuro font-youngest">
-              Elige tu paquete
+              Elige tu paquete:
             </h1>
 
             <div className="space-y-4 mb-8">
@@ -520,7 +523,7 @@ export default function CalendarioEligeDia() {
                 }`}
               >
                 <h2 className="text-2xl font-vintage mb-1">
-                  Paquete 2 (Más Popular)
+                  Paquete 2 (Más Popular) 🌟
                 </h2>
                 <p className="text-lg mb-2">4 a 6 personas — 40 min</p>
                 <p className="font-youngest text-xl">
@@ -541,8 +544,8 @@ export default function CalendarioEligeDia() {
 
         {currentStep === "personal" && (
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
-            <h1 className="text-3xl md:text-4xl text-center mb-8 text-verde-oscuro font-youngest">
-              ¿Cuántos saber más de ti?
+            <h1 className="text-3xl md:text-4xl text-center mb-8 text-verde-oscuro font-youngest text-pretty">
+              Datos para reservar tu fecha:
             </h1>
 
             <div className="space-y-4 mb-8">
@@ -617,13 +620,13 @@ export default function CalendarioEligeDia() {
         {currentStep === "address" && (
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
             <h1 className="text-3xl md:text-4xl text-center mb-8 text-verde-oscuro font-youngest">
-              Confirmanos tu dirección
+              Confirma tu dirección:
             </h1>
 
             <div className="space-y-4 mb-8">
               <div>
                 <label className="block text-verde-oscuro text-sm font-medium mb-2">
-                  Dirección completa
+                  Dirección completa 📍
                 </label>
                 <textarea
                   value={formData.direccion}
@@ -647,11 +650,11 @@ export default function CalendarioEligeDia() {
 
         {currentStep === "family" && (
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
-            <h1 className="text-3xl md:text-4xl text-center mb-4 text-verde-oscuro font-youngest">
-              ¿Quieres agregar más familiares?
+            <h1 className="text-3xl md:text-4xl text-center mb-4 text-verde-oscuro font-youngest text-pretty">
+              ¿Quieres agregar personas extra?
             </h1>
             <p className="text-center text-verde-apagado mb-8">
-              Para coordinar mejor la visita
+              *Máximo 3 personas extra por paquete*
             </p>
 
             {formData.quiereFamiliares === null ? (
@@ -660,7 +663,7 @@ export default function CalendarioEligeDia() {
                   onClick={() => updateFormData("quiereFamiliares", true)}
                   className="w-full py-6 rounded-2xl text-xl font-semibold bg-verde-oscuro text-white hover:bg-verde-apagado transition-all"
                 >
-                  Sí, agregar familiares
+                  Sí, agregar
                 </button>
                 <button
                   onClick={() => {
@@ -669,26 +672,30 @@ export default function CalendarioEligeDia() {
                   }}
                   className="w-full py-6 rounded-2xl text-xl font-semibold border-3 border-verde-oscuro text-verde-oscuro hover:bg-verde-oscuro hover:text-white transition-all"
                 >
-                  No, continuar con mi paquete
+                  No, continuar
                 </button>
               </div>
             ) : (
               <div className="space-y-6">
                 <div>
-                  <label className="block text-verde-oscuro text-lg font-medium mb-4 text-center">
-                    ¿Cuántos familiares más?
-                  </label>
                   <input
                     type="number"
-                    min="1"
-                    max="10"
                     value={formData.cantidadFamiliares}
-                    onChange={(e) =>
-                      updateFormData(
-                        "cantidadFamiliares",
-                        parseInt(e.target.value) || 0
-                      )
-                    }
+                    onChange={(e) => {
+                      let value = parseInt(e.target.value);
+
+                      // Si está vacío (borrando), dejamos vacío para que pueda seguir escribiendo
+                      if (e.target.value === "") {
+                        updateFormData("cantidadFamiliares", "");
+                        return;
+                      }
+
+                      // LÍMITES inmediatos
+                      if (value > 3) value = 3;
+                      if (value < 1) value = 1;
+
+                      updateFormData("cantidadFamiliares", value);
+                    }}
                     className="w-full p-6 rounded-xl border-2 border-stone-200 focus:border-verde-apagado focus:outline-none text-verde-oscuro text-center text-3xl font-bold"
                   />
                 </div>
@@ -710,7 +717,7 @@ export default function CalendarioEligeDia() {
               ¿Tienes mascotas?
             </h1>
             <p className="text-center text-verde-apagado mb-8">
-              Queremos conocer a todos en casa
+              ¡Queremos conocer a todos en casa! 🐶🐱
             </p>
 
             {formData.tieneMascotas === null ? (
@@ -739,15 +746,22 @@ export default function CalendarioEligeDia() {
                   </label>
                   <input
                     type="number"
-                    min="1"
-                    max="20"
                     value={formData.cantidadMascotas}
-                    onChange={(e) =>
-                      updateFormData(
-                        "cantidadMascotas",
-                        parseInt(e.target.value) || 0
-                      )
-                    }
+                    onChange={(e) => {
+                      let value = parseInt(e.target.value);
+
+                      // Permitir borrar para poder escribir
+                      if (e.target.value === "") {
+                        updateFormData("cantidadMascotas", "");
+                        return;
+                      }
+
+                      // Ajustes de rango
+                      if (value > 10) value = 10;
+                      if (value < 1) value = 1;
+
+                      updateFormData("cantidadMascotas", value);
+                    }}
                     className="w-full p-6 rounded-xl border-2 border-stone-200 focus:border-verde-apagado focus:outline-none text-verde-oscuro text-center text-3xl font-bold"
                   />
                 </div>
@@ -765,18 +779,18 @@ export default function CalendarioEligeDia() {
 
         {currentStep === "payment" && (
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
-              <span className="text-rojo font-semibold text-xl block mt-2 mb-4 text-end">
-                {formatTime(timeLeft)}
-              </span>
+            <span className="text-rojo font-semibold text-3xl block mt-2 mb-4 text-end">
+              {formatTime(timeLeft)}
+            </span>
             <h1 className="text-3xl md:text-4xl text-center mb-4 text-verde-oscuro font-youngest">
               Estás a nada de terminar…
             </h1>
 
-            <p className="text-center text-verde-apagado mb-8">
-              Para finalizar tu reserva transfíere a esta cuenta:
+            <p className="text-center text-verde-apagado mb-8 text-pretty">
+              Para finalizar tu reserva transfíere a la cuenta:
               <br />
               <strong className="text-verde-oscuro">
-                BI Monetaria en Q 1940072992
+                BI Monetaria en Q 1940072992 <br /> Andrea Lizeth Osorio
               </strong>
               <br />
               y sube tu comprobante.
@@ -786,6 +800,8 @@ export default function CalendarioEligeDia() {
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
+                setIsUploading(true);
+
                 const fileInput = e.target.comprobante.files[0];
                 const form = new FormData();
                 form.append("reservation_id", reservationId);
@@ -799,79 +815,151 @@ export default function CalendarioEligeDia() {
                 const data = await res.json();
                 if (data.success) {
                   setCurrentStep("done");
+                } else {
+                  setIsUploading(false); // si falla, no quedamos atascados
                 }
               }}
               className="space-y-6"
             >
-              <div
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const file = e.dataTransfer.files[0];
-                  if (file) {
-                    const input = e.target.querySelector('input[type="file"]');
-                    const dt = new DataTransfer();
-                    dt.items.add(file);
-                    input.files = dt.files;
-                  }
-                }}
-                onDragOver={(e) => e.preventDefault()}
-                className="relative border-3 border-dashed border-stone-300 rounded-2xl p-12 text-center hover:border-verde-apagado transition-all cursor-pointer bg-stone-50"
-                onClick={() => document.getElementById("file-upload").click()}
-              >
-                <input
-                  type="file"
-                  id="file-upload"
-                  name="comprobante"
-                  accept="image/*"
-                  required
-                  className="hidden"
-                  onChange={(e) => {
-                    const fileName = e.target.files[0]?.name;
-                    if (fileName) {
-                      document.getElementById("file-name").textContent =
-                        fileName;
-                    }
-                  }}
-                />
-
-                <div className="space-y-4">
-                  <div className="w-16 h-16 mx-auto bg-verde-apagado rounded-full flex items-center justify-center text-white text-3xl">
-                    📷
-                  </div>
-                  <div>
-                    <p className="text-verde-oscuro font-semibold text-lg mb-2">
-                      Arrastra tu comprobante aquí
-                    </p>
-                    <p className="text-verde-apagado text-sm">
-                      o haz clic para seleccionar
-                    </p>
-                    <p
-                      id="file-name"
-                      className="text-verde-oscuro text-sm mt-2 font-medium"
-                    ></p>
-                  </div>
+              {isUploading ? (
+                <div className="py-16 text-center">
+                  <div className="animate-spin w-16 h-16 border-4 border-verde-oscuro border-t-transparent rounded-full mx-auto mb-6"></div>
+                  <p className="text-verde-oscuro font-semibold text-xl">
+                    Subiendo comprobante…
+                  </p>
+                  <p className="text-verde-apagado text-sm mt-2">
+                    Esto puede tardar unos segundos.
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <>
+                  <div
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const file = e.dataTransfer.files[0];
+                      if (!file) return;
 
-              <button
-                type="submit"
-                className="w-full py-4 rounded-2xl text-lg font-semibold bg-verde-oscuro text-white hover:bg-verde-apagado transition-all"
-              >
-                Confirmar
-              </button>
+                      // Validar 2MB
+                      if (file.size > 2 * 1024 * 1024) {
+                        setFileError(
+                          "El archivo es demasiado grande. Máximo 2 MB."
+                        );
+                        setUploadedFileName(null);
+                        return;
+                      }
+
+                      setFileError(null);
+                      setUploadedFileName(file.name);
+
+                      const input =
+                        e.target.querySelector('input[type="file"]');
+                      const dt = new DataTransfer();
+                      dt.items.add(file);
+                      input.files = dt.files;
+                    }}
+                    onDragOver={(e) => e.preventDefault()}
+                    className={`relative border-3 border-dashed rounded-2xl p-12 text-center transition-all cursor-pointer ${
+                      uploadedFileName
+                        ? "border-verde-oscuro bg-verde-apagado/10"
+                        : "border-stone-300 bg-stone-50 hover:border-verde-apagado"
+                    }`}
+                    onClick={() =>
+                      document.getElementById("file-upload").click()
+                    }
+                  >
+                    <input
+                      type="file"
+                      id="file-upload"
+                      name="comprobante"
+                      accept="image/*"
+                      required
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        // Validar 2MB
+                        if (file.size > 2 * 1024 * 1024) {
+                          setFileError(
+                            "El archivo es demasiado grande. Máximo 2 MB."
+                          );
+                          setUploadedFileName(null);
+                          e.target.value = ""; // reset input
+                          return;
+                        }
+
+                        setFileError(null);
+                        setUploadedFileName(file.name);
+                      }}
+                    />
+
+                    <div className="space-y-4">
+                      <div className="w-16 h-16 mx-auto bg-verde-oscuro text-white rounded-full flex items-center justify-center text-3xl">
+                        📷
+                      </div>
+
+                      {uploadedFileName ? (
+                        <p className="text-verde-oscuro font-semibold text-lg">
+                          {uploadedFileName}
+                        </p>
+                      ) : (
+                        <>
+                          <p className="text-verde-oscuro font-semibold text-lg">
+                            Arrastra tu comprobante aquí
+                          </p>
+                          <p className="text-verde-apagado text-sm">
+                            o haz clic para seleccionar
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {fileError && (
+                    <p className="text-red-500 text-sm text-center mt-2">
+                      {fileError}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={!uploadedFileName}
+                    className="w-full py-4 rounded-2xl text-lg font-semibold bg-verde-oscuro text-white hover:bg-verde-apagado transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Confirmar
+                  </button>
+                </>
+              )}
             </form>
           </div>
         )}
 
         {currentStep === "done" && (
-          <div className="bg-white rounded-3xl p-6 md:p-10 text-center">
-            <h1 className="text-3xl md:text-4xl text-verde-oscuro font-youngest mb-6">
-              ¡Gracias por tu reserva {formData.nombre}!
+          <div className="bg-white rounded-3xl p-6 md:p-10 text-center space-y-8 animate-fadeIn">
+            <h1 className="text-3xl md:text-4xl text-verde-oscuro font-youngest leading-tight">
+              ¡Gracias por tu reserva,{" "}
+              <span className="font-bold">{formData.nombre}</span>!
             </h1>
 
-            <div className="w-40 h-40 rounded-full bg-green-300 mx-auto flex items-center justify-center text-6xl">
-              ✓
+            <div className="w-32 h-32 rounded-full bg-green-100 mx-auto flex items-center justify-center shadow-inner">
+              <span className="text-green-600 text-6xl">✓</span>
             </div>
+
+            <p className="text-verde-apagado text-lg leading-relaxed max-w-md mx-auto">
+              <span class="italic pb-8 font-bold">
+                Recibirás un correo de confirmación
+              </span>
+              <br />
+              Si tienes dudas, escríbenos por WhatsApp. ¡Gracias por elegirme
+              este 2025 🎄!
+            </p>
+
+            <a
+              href="https://wa.me/34337768" // <-- coloca aquí el link del Whats
+              className="inline-block mt-4 py-3 px-6 rounded-2xl bg-verde-oscuro text-white font-semibold hover:bg-verde-apagado transition-all"
+            >
+              Abrir WhatsApp
+            </a>
           </div>
         )}
       </div>

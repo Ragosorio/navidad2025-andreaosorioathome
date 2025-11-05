@@ -70,7 +70,7 @@ export async function POST({ request }: { request: Request }) {
 
     // 4) CORREO CLIENTE
     await resend.emails.send({
-      from: "Navidad <noreply@tudominio.com>",
+      from: "Navidad <noreply@andreaosoriophotography.com>",
       to: email,
       subject: "🎄 Tu sesión navideña ha sido confirmada",
       html: `
@@ -84,8 +84,8 @@ export async function POST({ request }: { request: Request }) {
 
     // 5) CORREO ADMIN
     await resend.emails.send({
-      from: "Navidad <noreply@tudominio.com>",
-      to: "Andreaosoriophotgraphy@gmail.com",
+      from: "Navidad <noreply@andreaosoriophotography.com>",
+      to: "Andreaosoriophotography@gmail.com",
       subject: `📌 Nueva cita confirmada - ${first_name} ${last_name}`,
       html: `
         <h2>Nueva reserva confirmada</h2>
