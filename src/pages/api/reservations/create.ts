@@ -13,6 +13,7 @@ export async function POST({ request }: { request: Request }) {
     p_direccion: body.direccion,
     p_mascotas: body.mascotas,
     p_personas_extra: body.personas_extra,
+    p_paquete: body.paquete,
   });
 
   if (error) return new Response(error.message, { status: 400 });

@@ -39,7 +39,7 @@ const leftColumn = faqs.slice(0, 4);
 const rightColumn = faqs.slice(4);
 ---
 
-<section class="w-full min-h-dvh bg-[url(../assets/images/papel-fondo.webp)] bg-cover bg-center border-8 md:border-20 border-rojo-oscuro pt-16 pb-10 flex flex-col">
+<section id="preguntas" class="w-full min-h-dvh bg-[url(../assets/images/papel-fondo.webp)] bg-cover bg-center border-8 md:border-20 border-rojo-oscuro pt-16 pb-10 flex flex-col">
   <!-- Header -->
   <div class="relative text-center md:text-start mb-12 md:mb-20">
     <h2 class="font-vintage text-rojo-oscuro text-7xl md:text-9xl leading-10 md:leading-16 mb-8 md:mb-10 px-2 md:pl-10">Preguntas frecuentes</h2>
@@ -54,11 +54,11 @@ const rightColumn = faqs.slice(4);
     <div class="md:hidden space-y-6">
       {faqs.map((faq) => (
         <div class="faq-item">
-          <button class="flex items-start gap-3 font-youngest text-verde-apagado text-xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+          <button class="flex items-start gap-3 font-montserrat text-verde-apagado text-xl font-bold w-full text-left hover:opacity-80 transition-opacity">
             <Estrella class="w-5 h-5 shrink-0 mt-1" />
             {faq.pregunta}
           </button>
-          <p class="faq-answer font-youngest text-verde-apagado text-base ml-8 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+          <p class="faq-answer font-montserrat text-verde-apagado text-base ml-8 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
             {faq.respuesta}
           </p>
         </div>
@@ -71,11 +71,11 @@ const rightColumn = faqs.slice(4);
       <div class="space-y-6">
         {leftColumn.map((faq) => (
           <div class="faq-item">
-            <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+            <button class="flex items-start gap-3 font-montserrat text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
               <Estrella class="w-6 h-6 shrink-0 mt-1" />
               {faq.pregunta}
             </button>
-            <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+            <p class="faq-answer font-montserrat text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
               {faq.respuesta}
             </p>
           </div>
@@ -86,11 +86,11 @@ const rightColumn = faqs.slice(4);
       <div class="space-y-6">
         {rightColumn.map((faq) => (
           <div class="faq-item">
-            <button class="flex items-start gap-3 font-youngest text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
+            <button class="flex items-start gap-3 font-montserrat text-verde-apagado text-2xl font-bold w-full text-left hover:opacity-80 transition-opacity">
               <Estrella class="w-6 h-6 shrink-0 mt-1" />
               {faq.pregunta}
             </button>
-            <p class="faq-answer font-youngest text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+            <p class="faq-answer font-montserrat text-verde-apagado text-lg ml-9 mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
               {faq.respuesta}
             </p>
           </div>

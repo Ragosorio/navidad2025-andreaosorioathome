@@ -11,9 +11,11 @@ export default function CalendarioEligeDia() {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [error, setError] = useState(null);
   const [showTimeSelector, setShowTimeSelector] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState(null);
   const [currentStep, setCurrentStep] = useState("calendar");
   const [reservationId, setReservationId] = useState(null); // calendar, time, personal, address, family, pets
   const [formData, setFormData] = useState({
+    paquete: null,
     nombre: "",
     apellido: "",
     telefono: "",
@@ -155,7 +157,7 @@ export default function CalendarioEligeDia() {
 
   const handleContinue = () => {
     if (selectedSlot) {
-      setCurrentStep("personal");
+      setCurrentStep("package");
     }
   };
 
@@ -188,6 +190,7 @@ export default function CalendarioEligeDia() {
 
     const payload = {
       slot_id: selectedSlot.slot_id,
+      paquete: formData.paquete,
       first_name: formData.nombre,
       last_name: formData.apellido,
       phone: formData.telefono,
@@ -423,7 +426,7 @@ export default function CalendarioEligeDia() {
                           : "bg-stone-100 text-verde-oscuro hover:bg-stone-200"
                       }`}
                     >
-                      {slot.formatted_time}
+                      {slot.formatted_time.toLowerCase()}
                     </button>
                   ))}
                 </div>
@@ -448,6 +451,68 @@ export default function CalendarioEligeDia() {
                 </div>
               </>
             )}
+          </div>
+        )}
+
+        {currentStep === "package" && (
+          <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
+            <h1 className="text-3xl md:text-4xl text-center mb-6 text-verde-oscuro font-youngest">
+              Elige tu paquete
+            </h1>
+
+            <div className="space-y-4 mb-8">
+              {/* PAQUETE 1 */}
+              <button
+                onClick={() => {
+                  setSelectedPackage(1);
+                  updateFormData("paquete", 1);
+                }}
+                className={`w-full p-6 rounded-2xl border-3 transition-all text-left ${
+                  selectedPackage === 1
+                    ? "bg-verde-apagado text-white border-verde-apagado"
+                    : "bg-stone-100 text-verde-oscuro border-stone-200 hover:bg-stone-200"
+                }`}
+              >
+                <h2 className="text-2xl font-vintage mb-1">Paquete 1</h2>
+                <p className="text-lg mb-2">
+                  1 a 3 personas — 20 min
+                </p>
+                <p className="font-youngest text-xl">
+                  Q1,600 (15 fotos digitales)
+                </p>
+              </button>
+
+              {/* PAQUETE 2 */}
+              <button
+                onClick={() => {
+                  setSelectedPackage(2);
+                  updateFormData("paquete", 2);
+                }}
+                className={`w-full p-6 rounded-2xl border-3 transition-all text-left ${
+                  selectedPackage === 2
+                    ? "bg-verde-apagado text-white border-verde-apagado"
+                    : "bg-stone-100 text-verde-apagado border-stone-200 hover:bg-stone-200"
+                }`}
+              >
+                <h2 className="text-2xl font-vintage mb-1">
+                  Paquete 2 (Más Popular)
+                </h2>
+                <p className="text-lg mb-2">
+                  4 a 6 personas — 40 min
+                </p>
+                <p className="font-youngest text-xl">
+                  Q2,000 (25 fotos digitales)
+                </p>
+              </button>
+            </div>
+
+            <button
+              onClick={() => selectedPackage && setCurrentStep("personal")}
+              disabled={!selectedPackage}
+              className="w-full py-4 rounded-2xl text-lg font-semibold bg-verde-oscuro text-white hover:bg-verde-apagado transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Continuar
+            </button>
           </div>
         )}
 
@@ -674,73 +739,117 @@ export default function CalendarioEligeDia() {
             )}
           </div>
         )}
-      </div>
 
-      {currentStep === "payment" && (
-        <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm text-center">
-          <h1 className="text-3xl md:text-4xl text-verde-oscuro font-youngest mb-4">
-            Estás a nada de terminar…
-          </h1>
+        {currentStep === "payment" && (
+          <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
+            <h1 className="text-3xl md:text-4xl text-center mb-4 text-verde-oscuro font-youngest">
+              Estás a nada de terminar…
+            </h1>
 
-          <p className="text-verde-apagado mb-6">
-            Para finalizar tu reserva transfíere a esta cuenta:
-            <br />
-            <strong>xxx-xxx-xxx</strong>
-            <br />
-            y sube tu comprobante.
-            <br />
-            <span className="text-rojo font-semibold">Tienes 10 minutos.</span>
-          </p>
+            <p className="text-center text-verde-apagado mb-8">
+              Para finalizar tu reserva transfíere a esta cuenta:
+              <br />
+              <strong className="text-verde-oscuro">xxx-xxx-xxx</strong>
+              <br />
+              y sube tu comprobante.
+              <br />
+              <span className="text-rojo font-semibold">
+                Tienes 10 minutos.
+              </span>
+            </p>
 
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const fileInput = e.target.comprobante.files[0];
-              const form = new FormData();
-              form.append("reservation_id", reservationId);
-              form.append("file", fileInput);
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const fileInput = e.target.comprobante.files[0];
+                const form = new FormData();
+                form.append("reservation_id", reservationId);
+                form.append("file", fileInput);
 
-              const res = await fetch("/api/reservations/confirm", {
-                method: "POST",
-                body: form,
-              });
+                const res = await fetch("/api/reservations/confirm", {
+                  method: "POST",
+                  body: form,
+                });
 
-              const data = await res.json();
-              if (data.success) {
-                setCurrentStep("done");
-              }
-            }}
-            className="space-y-4"
-          >
-            <input
-              type="file"
-              name="comprobante"
-              accept="image/*"
-              required
-              className="block w-full"
-            />
-
-            <button
-              type="submit"
-              className="w-full py-4 rounded-2xl text-lg font-semibold bg-verde-oscuro text-white hover:bg-verde-apagado transition-all"
+                const data = await res.json();
+                if (data.success) {
+                  setCurrentStep("done");
+                }
+              }}
+              className="space-y-6"
             >
-              Confirmar
-            </button>
-          </form>
-        </div>
-      )}
+              <div
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const file = e.dataTransfer.files[0];
+                  if (file) {
+                    const input = e.target.querySelector('input[type="file"]');
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    input.files = dt.files;
+                  }
+                }}
+                onDragOver={(e) => e.preventDefault()}
+                className="relative border-3 border-dashed border-stone-300 rounded-2xl p-12 text-center hover:border-verde-apagado transition-all cursor-pointer bg-stone-50"
+                onClick={() => document.getElementById("file-upload").click()}
+              >
+                <input
+                  type="file"
+                  id="file-upload"
+                  name="comprobante"
+                  accept="image/*"
+                  required
+                  className="hidden"
+                  onChange={(e) => {
+                    const fileName = e.target.files[0]?.name;
+                    if (fileName) {
+                      document.getElementById("file-name").textContent =
+                        fileName;
+                    }
+                  }}
+                />
 
-      {currentStep === "done" && (
-        <div className="bg-white rounded-3xl p-6 md:p-10 text-center">
-          <h1 className="text-3xl md:text-4xl text-verde-oscuro font-youngest mb-6">
-            ¡Gracias por tu reserva {formData.nombre}!
-          </h1>
+                <div className="space-y-4">
+                  <div className="w-16 h-16 mx-auto bg-verde-apagado rounded-full flex items-center justify-center text-white text-3xl">
+                    📷
+                  </div>
+                  <div>
+                    <p className="text-verde-oscuro font-semibold text-lg mb-2">
+                      Arrastra tu comprobante aquí
+                    </p>
+                    <p className="text-verde-apagado text-sm">
+                      o haz clic para seleccionar
+                    </p>
+                    <p
+                      id="file-name"
+                      className="text-verde-oscuro text-sm mt-2 font-medium"
+                    ></p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="w-40 h-40 rounded-full bg-green-300 mx-auto flex items-center justify-center text-6xl">
-            ✓
+              <button
+                type="submit"
+                className="w-full py-4 rounded-2xl text-lg font-semibold bg-verde-oscuro text-white hover:bg-verde-apagado transition-all"
+              >
+                Confirmar
+              </button>
+            </form>
           </div>
-        </div>
-      )}
+        )}
+
+        {currentStep === "done" && (
+          <div className="bg-white rounded-3xl p-6 md:p-10 text-center">
+            <h1 className="text-3xl md:text-4xl text-verde-oscuro font-youngest mb-6">
+              ¡Gracias por tu reserva {formData.nombre}!
+            </h1>
+
+            <div className="w-40 h-40 rounded-full bg-green-300 mx-auto flex items-center justify-center text-6xl">
+              ✓
+            </div>
+          </div>
+        )}
+      </div>
 
       <style>{`
         @keyframes fadeIn {
