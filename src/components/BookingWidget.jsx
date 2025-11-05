@@ -8,6 +8,7 @@ export default function CalendarioEligeDia() {
   const [daysData, setDaysData] = useState([]);
   const [slotsData, setSlotsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 min = 600 segundos
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [error, setError] = useState(null);
   const [showTimeSelector, setShowTimeSelector] = useState(false);
@@ -265,6 +266,32 @@ export default function CalendarioEligeDia() {
     return days[date.getDay()];
   };
 
+  useEffect(() => {
+    if (currentStep === "payment") {
+      setTimeLeft(600); // reiniciar por si vuelve
+      const interval = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            // Cuando se acabe el tiempo, vuelve al calendario
+            setCurrentStep("calendar");
+            alert("Se acabó el tiempo, vuelve a intentar.");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [currentStep]);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  };
+
   return (
     <div className="min-h-screen bg-naranja-claro flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-2xl">
@@ -474,9 +501,7 @@ export default function CalendarioEligeDia() {
                 }`}
               >
                 <h2 className="text-2xl font-vintage mb-1">Paquete 1</h2>
-                <p className="text-lg mb-2">
-                  1 a 3 personas — 20 min
-                </p>
+                <p className="text-lg mb-2">1 a 3 personas — 20 min</p>
                 <p className="font-youngest text-xl">
                   Q1,600 (15 fotos digitales)
                 </p>
@@ -497,9 +522,7 @@ export default function CalendarioEligeDia() {
                 <h2 className="text-2xl font-vintage mb-1">
                   Paquete 2 (Más Popular)
                 </h2>
-                <p className="text-lg mb-2">
-                  4 a 6 personas — 40 min
-                </p>
+                <p className="text-lg mb-2">4 a 6 personas — 40 min</p>
                 <p className="font-youngest text-xl">
                   Q2,000 (25 fotos digitales)
                 </p>
@@ -742,6 +765,9 @@ export default function CalendarioEligeDia() {
 
         {currentStep === "payment" && (
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm">
+              <span className="text-rojo font-semibold text-xl block mt-2 mb-4 text-end">
+                {formatTime(timeLeft)}
+              </span>
             <h1 className="text-3xl md:text-4xl text-center mb-4 text-verde-oscuro font-youngest">
               Estás a nada de terminar…
             </h1>
@@ -749,13 +775,12 @@ export default function CalendarioEligeDia() {
             <p className="text-center text-verde-apagado mb-8">
               Para finalizar tu reserva transfíere a esta cuenta:
               <br />
-              <strong className="text-verde-oscuro">xxx-xxx-xxx</strong>
+              <strong className="text-verde-oscuro">
+                BI Monetaria en Q 1940072992
+              </strong>
               <br />
               y sube tu comprobante.
               <br />
-              <span className="text-rojo font-semibold">
-                Tienes 10 minutos.
-              </span>
             </p>
 
             <form
