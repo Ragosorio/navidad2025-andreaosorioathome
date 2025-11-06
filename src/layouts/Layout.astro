@@ -6,6 +6,26 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>Andrea Osorio at home</title>
+    <meta
+      name="description"
+      content="Transformamos tu hogar en un escenario navideño cálido y elegante para capturar recuerdos auténticos, íntimos y bellos. Una experiencia premium en tu casa."
+    />
+
+    <meta property="og:title" content="Andrea Osorio At Home" />
+    <meta
+      property="og:description"
+      content="Transformamos tu hogar en un escenario navideño cálido y elegante para capturar recuerdos auténticos, íntimos y bellos. Una experiencia premium en tu casa."
+    />
+    <meta property="og:image" content="/preview.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Andrea Osorio At Home" />
+    <meta
+      name="twitter:description"
+      content="Transformamos tu hogar en un escenario navideño cálido y elegante para capturar recuerdos auténticos, íntimos y bellos. Una experiencia premium en tu casa."
+    />
+    <meta name="twitter:image" content="/preview.webp" />
   </head>
   <body>
     <slot />
@@ -16,32 +36,32 @@
   @import "tailwindcss";
 
   @theme {
-	  --color-verde-oscuro: #0f3316;
-	  --color-verde-apagado: #455447;
-	  --color-rojo-oscuro: #641013;
-	  --color-rojo: #853835;
-	  --color-naranja-claro: #f2edeb;
-	  
-	  --font-youngest: "youngest", sans-serif; 
-	  --font-vintage: "vintage", sans-serif; 
-	  --font-montserrat: "montserrat", sans-serif;
-	}
-	
-	@font-face {
-	  font-family: "youngest";
-	  font-display: swap;
-	  font-style: normal;
-	  font-weight: normal;
-	  src: url("/fonts/youngest.woff2") format("woff2");
-	}
-  
-	@font-face {
-	  font-family: "vintage";
-	  font-display: swap;
-	  src: url("/fonts/vintage.woff2") format("woff2");
-	}
+    --color-verde-oscuro: #0f3316;
+    --color-verde-apagado: #455447;
+    --color-rojo-oscuro: #641013;
+    --color-rojo: #853835;
+    --color-naranja-claro: #f2edeb;
 
-	@font-face {
+    --font-youngest: "youngest", sans-serif;
+    --font-vintage: "vintage", sans-serif;
+    --font-montserrat: "montserrat", sans-serif;
+  }
+
+  @font-face {
+    font-family: "youngest";
+    font-display: swap;
+    font-style: normal;
+    font-weight: normal;
+    src: url("/fonts/youngest.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "vintage";
+    font-display: swap;
+    src: url("/fonts/vintage.woff2") format("woff2");
+  }
+
+  @font-face {
     font-family: "montserrat";
     src: url("/fonts/montserrat.woff2") format("woff2");
     font-weight: 100 900;
